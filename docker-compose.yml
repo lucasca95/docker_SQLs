@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+ javaspring_control:
+  image: adminer
+  depends_on:
+   - javaspring_db
+  ports:
+   - "80:8080"
+  restart: always
+
+ javaspring_db:
+  image: mysql
+  command: --default-authentication-plugin=mysql_native_password
+  container_name: javaspring_db
+  restart: always
+  ports:
+   - "3306:3306"
+  volumes:
+   - javaspring_db_vol:/var/lib/mysql
+  environment: 
+   MYSQL_ROOT_PASSWORD: superRootPassword
+   MYSQL_USER: lucasca95
+   MYSQL_PASSWORD: admin
+   MYSQL_DATABASE: db
+                
+volumes:
+ javaspring_db_vol:
+        
+# javaspring_web:
+    #     build:
+    #         context: .
+    #         args:
+    #             JAR_FILE: target/webapp-0.0.1-SNAPSHOT.jar
+    #     image: javaspring_web
+    #     container_name: javaspring_web
+    #     ports:
+    #         - "80:8080"
+    #     volumes:
+    #         - ./webapp:/javaspring_web
