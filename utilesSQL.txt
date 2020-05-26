@@ -1,0 +1,57 @@
+DROP TABLE IF EXISTS candidate;
+CREATE TABLE candidate(
+    id INT AUTO_INCREMENT,
+    fullname VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+----------------------------------------------
+
+DROP TABLE IF EXISTS users_rols;
+DROP TABLE IF EXISTS rol;
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+    id INT AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(30) NOT NULL UNIQUE,
+    status VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE rol(
+    id INT AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE users_rols(
+    user_id INT,
+    rol_id INT,
+    PRIMARY KEY (user_id, rol_id),
+    FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY(rol_id) REFERENCES rol(id) ON DELETE CASCADE
+);
+
+INSERT INTO user(
+    name, password, email, status
+)VALUES(
+    'Test', '$2a$10$DD/FQ0hTIprg3fGarZl1reK1f7tzgM4RuFKjAKyun0Si60w6g3v5i', 'test@test.com', 'VERIFIED'
+);
+
+INSERT INTO rol(
+    name, description
+)VALUES(
+    'ADMIN', 'Usuario administrador del sistema'
+),(
+    'USER', 'Usuario común del sistema'
+);
+
+INSERT INTO users_rols(
+    user_id, rol_id
+)VALUES(
+    1, 1
+),(
+    1, 2
+);
