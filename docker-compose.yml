@@ -4,28 +4,43 @@ services:
  javaspring_control:
   image: adminer
   depends_on:
-   - javaspring_db
+   - db_postgresql
   ports:
    - "80:8080"
   restart: always
 
- javaspring_db:
-  image: mysql
-  command: --default-authentication-plugin=mysql_native_password
-  container_name: javaspring_db
+ db_postgresql:
+  image: postgres
+  container_name: db_postgres
   restart: always
   ports:
-   - "3306:3306"
+   - "5432:5432"
   volumes:
-   - javaspring_db_vol:/var/lib/mysql
+   - db_postgres_vol:/var/lib/mysql
   environment: 
-   MYSQL_ROOT_PASSWORD: superRootPassword
-   MYSQL_USER: lucasca95
-   MYSQL_PASSWORD: admin
-   MYSQL_DATABASE: db
+   POSTGRES_PASSWORD: superRootPassword
+   POSTGRES_USER: lucasca95
+   POSTGRES_PASSWORD: admin
+   POSTGRES_DB: db
+
+ # db_mysql:
+ #  image: mysql
+ #  command: --default-authentication-plugin=mysql_native_password
+ #  container_name: db_mysql
+ #  restart: always
+ #  ports:
+ #   - "3306:3306"
+ #  volumes:
+ #   - db_mysql_vol:/var/lib/mysql
+ #  environment: 
+ #   MYSQL_ROOT_PASSWORD: superRootPassword
+ #   MYSQL_USER: lucasca95
+ #   MYSQL_PASSWORD: admin
+ #   MYSQL_DATABASE: db
                 
 volumes:
- javaspring_db_vol:
+ db_mysql_vol:
+ db_postgres_vol:
         
 # javaspring_web:
     #     build:
