@@ -55,3 +55,57 @@ INSERT INTO users_rols(
 ),(
     1, 2
 );
+
+#################################################################
+#################################################################
+                        PostgreSQL
+#################################################################
+#################################################################
+
+DROP TABLE IF EXISTS petition, appuser;
+
+CREATE TABLE appuser (
+    id SERIAL PRIMARY KEY NOT NULL,
+    first_name VARCHAR(20) NOT NULL,
+    last_name VARCHAR(20) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    type VARCHAR(1) NOT NULL
+);
+
+CREATE TABLE petition(
+    id SERIAL PRIMARY KEY NOT NULL,
+    order_date date NOT NULL,
+    order_hour timestamptz NOT NULL,
+    helped_id INT NOT NULL,
+    colaborator_id INT NOT NULL,
+    FOREIGN KEY (helped_id) REFERENCES appuser(id) ON UPDATE CASCADE,
+    FOREIGN KEY (colaborator_id) REFERENCES appuser(id) ON UPDATE CASCADE
+);
+
+INSERT INTO appuser(
+    first_name,
+    last_name,
+    email,
+    password,
+    type
+)VALUES
+('Lucas','Camino','lucascamino@test.com','1234','C'),
+('Claudia','Genchi','claudiagenchi@test.com','1234','C'),
+('Eduardo','Camino','eduardocamino@test.com','1234','C'),
+('Agustina','Camino','agustinacamino@test.com','1234','C'),
+('Yiye','Camino','yiyecamino@test.com','1234','H'),
+('Marga','Carreras','margacarreras@test.com','1234','H'),
+('Random','Viejo','randomviejo@test.com','1234','H');
+
+
+INSERT INTO petition(
+    order_date, order_hour, helped_id, colaborator_id)
+    VALUES
+    (now(), now() + '- 6 hours', 5, 1),
+    (now(), now() + '- 13 hours', 6, 1),
+    (now(), now() + '- 5 hours', 5, 1),
+    (now(), now() + '- 4 hours', 5, 1),
+    (now(), now() + '- 3 hours', 5, 1),
+    (now(), now() + '- 2 hours', 5, 1),
+    (now(), now() + '- 17 hours', 5, 3);
