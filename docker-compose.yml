@@ -1,7 +1,7 @@
 version: '3'
 
 services:
- javaspring_control:
+ control:
   image: adminer
   depends_on:
    - db_postgresql
@@ -16,7 +16,7 @@ services:
   ports:
    - "5432:5432"
   volumes:
-   - db_postgres_vol:/var/lib/mysql
+   - db_postgres_vol:/var/lib/postgresql/data
   environment: 
    POSTGRES_PASSWORD: superRootPassword
    POSTGRES_USER: lucasca95

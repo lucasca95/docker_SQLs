@@ -62,45 +62,60 @@ INSERT INTO users_rols(
 #################################################################
 #################################################################
 
-DROP TABLE IF EXISTS petition, appuser;
+DROP TABLE IF EXISTS petition, review, appuser;
 
 CREATE TABLE appuser (
     id SERIAL PRIMARY KEY NOT NULL,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
+    birthdate DATE NOT NULL,
     email VARCHAR(30) NOT NULL,
     password VARCHAR(100) NOT NULL,
-    type VARCHAR(1) NOT NULL
+    type VARCHAR(1) NOT NULL,
+    rating FLOAT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE petition(
     id SERIAL PRIMARY KEY NOT NULL,
-    order_date date NOT NULL,
-    order_hour timestamptz NOT NULL,
+    day DATE NOT NULL,
+    hour timestamptz NOT NULL,
     helped_id INT NOT NULL,
-    colaborator_id INT NOT NULL,
+    collaborator_id INT NOT NULL,
     FOREIGN KEY (helped_id) REFERENCES appuser(id) ON UPDATE CASCADE,
-    FOREIGN KEY (colaborator_id) REFERENCES appuser(id) ON UPDATE CASCADE
+    FOREIGN KEY (collaborator_id) REFERENCES appuser(id) ON UPDATE CASCADE
+);
+
+CREATE TABLE review(
+    id SERIAL PRIMARY KEY NOT NULL,
+    rating INT NOT NULL,
+    comment VARCHAR(140) DEFAULT '',
+    petition_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (petition_id) REFERENCES petition(id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES appuser(id) ON UPDATE CASCADE,
+    CHECK (rating BETWEEN 0 AND 10)
 );
 
 INSERT INTO appuser(
     first_name,
     last_name,
+    birthdate,
     email,
     password,
-    type
+    type,
+    rating
 )VALUES
-('Lucas','Camino','lucascamino@test.com','1234','C'),
-('Claudia','Genchi','claudiagenchi@test.com','1234','C'),
-('Eduardo','Camino','eduardocamino@test.com','1234','C'),
-('Agustina','Camino','agustinacamino@test.com','1234','C'),
-('Yiye','Camino','yiyecamino@test.com','1234','H'),
-('Marga','Carreras','margacarreras@test.com','1234','H'),
-('Random','Viejo','randomviejo@test.com','1234','H');
+('Lucas','Camino','1995-12-13','lucascamino@test.com','1234','C',10),
+('Claudia','Genchi','1967-02-24','claudiagenchi@test.com','1234','C',8),
+('Eduardo','Camino','1967-06-18','eduardocamino@test.com','1234','C',7),
+('Agustina','Camino','2000-03-22','agustinacamino@test.com','1234','C',4),
+('Yiye','Camino','1944-09-20','yiyecamino@test.com','1234','H',8),
+('Marga','Carreras','1935-11-04','margacarreras@test.com','1234','H',10),
+('Random','Viejo','1938-01-05','randomviejo@test.com','1234','H',4);
 
 
 INSERT INTO petition(
-    order_date, order_hour, helped_id, colaborator_id)
+    day, hour, helped_id, collaborator_id)
     VALUES
     (now(), now() + '- 6 hours', 5, 1),
     (now(), now() + '- 13 hours', 6, 1),
@@ -109,3 +124,14 @@ INSERT INTO petition(
     (now(), now() + '- 3 hours', 5, 1),
     (now(), now() + '- 2 hours', 5, 1),
     (now(), now() + '- 17 hours', 5, 3);
+   
+INSERT INTO review(
+    rating, comment, petition_id, user_id)
+    VALUES
+    (10, 'Me agradeció con un caramelo', 1, 1),
+    (10, 'Un chico muy amable', 1, 5),
+    (7, 'Un asco el alfajor que me dio', 2, 4),
+    (2, 'Me trató mal', 2, 6),
+    (7, 'Me dio torta de vainilla', 4, 3),
+    (10, 'Cumplió con lo que le pedí', 4, 1);
+
