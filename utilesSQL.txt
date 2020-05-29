@@ -79,6 +79,7 @@ CREATE TABLE petition(
     id SERIAL PRIMARY KEY NOT NULL,
     day DATE NOT NULL,
     hour timestamptz NOT NULL,
+    gift VARCHAR(100),
     helped_id INT NOT NULL,
     collaborator_id INT NOT NULL,
     FOREIGN KEY (helped_id) REFERENCES appuser(id) ON UPDATE CASCADE,
@@ -113,17 +114,16 @@ INSERT INTO appuser(
 ('Marga','Carreras','1935-11-04','margacarreras@test.com','1234','H',10),
 ('Random','Viejo','1938-01-05','randomviejo@test.com','1234','H',4);
 
-
 INSERT INTO petition(
-    day, hour, helped_id, collaborator_id)
+    day, hour, gift, helped_id, collaborator_id)
     VALUES
-    (now(), now() + '- 6 hours', 5, 1),
-    (now(), now() + '- 13 hours', 6, 1),
-    (now(), now() + '- 5 hours', 5, 1),
-    (now(), now() + '- 4 hours', 5, 1),
-    (now(), now() + '- 3 hours', 5, 1),
-    (now(), now() + '- 2 hours', 5, 1),
-    (now(), now() + '- 17 hours', 5, 3);
+    (now(), now() + '- 6 hours', 'Gracias!', 5, 1),
+    (now(), now() + '- 13 hours', 'Gracias!', 6, 1),
+    (now(), now() + '- 5 hours', 'Gracias!', 5, 1),
+    (now(), now() + '- 4 hours', 'Gracias!', 5, 1),
+    (now(), now() + '- 3 hours', 'Gracias!', 5, 1),
+    (now(), now() + '- 2 hours', 'Gracias!', 5, 1),
+    (now(), now() + '- 17 hours', 'Gracias!', 5, 3);
    
 INSERT INTO review(
     rating, comment, petition_id, user_id)
